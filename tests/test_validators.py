@@ -1,5 +1,6 @@
 import unittest
 
+from healthflow_be_egypt import egypt_governorates, governorate_by_code
 from healthflow_be_egypt.validators import parse_egyptian_national_id, validate_egyptian_phone
 
 
@@ -26,6 +27,12 @@ class EgyptianValidatorTests(unittest.TestCase):
     def test_phone_is_e164(self):
         self.assertTrue(validate_egyptian_phone("+201012345678"))
         self.assertFalse(validate_egyptian_phone("01012345678"))
+
+    def test_governorate_seed_contains_27_bilingual_records(self):
+        governorates = egypt_governorates()
+        self.assertEqual(len(governorates), 27)
+        self.assertEqual(governorate_by_code("01").name_ar, "القاهرة")
+        self.assertEqual(governorate_by_code("35").name_en, "South Sinai")
 
 
 if __name__ == "__main__":

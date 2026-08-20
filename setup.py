@@ -7,6 +7,7 @@ setup(
     name="healthflow-be-egypt",
     version="0.1.0",
     packages=find_packages(),
+    package_data={"healthflow_be_egypt": ["data/*.json"]},
     include_package_data=True,
     license="GNU AGPL v3",
     description="Egypt-specific localization and validation helpers for HealthFlow Payer",
