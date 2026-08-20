@@ -73,3 +73,12 @@ def parse_egyptian_national_id(value: str) -> EgyptianNationalId:
 def validate_egyptian_phone(value: str) -> bool:
     """Return whether value is an Egyptian mobile number in E.164 form."""
     return isinstance(value, str) and bool(_EGYPTIAN_MOBILE.fullmatch(value))
+
+
+def validate_egyptian_insuree_number(value: str) -> list[dict]:
+    """Adapt National ID validation to openIMIS ``insuree_number_validator``."""
+    try:
+        parse_egyptian_national_id(value)
+    except ValueError as exc:
+        return [{"errorCode": 5, "message": str(exc)}]
+    return []

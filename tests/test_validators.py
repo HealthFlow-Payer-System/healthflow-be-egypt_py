@@ -1,6 +1,12 @@
 import unittest
 
-from healthflow_be_egypt import DEFAULT_EGYPT_CONFIG, egypt_governorates, get_default_config, governorate_by_code
+from healthflow_be_egypt import (
+    DEFAULT_EGYPT_CONFIG,
+    egypt_governorates,
+    get_default_config,
+    governorate_by_code,
+    validate_egyptian_insuree_number,
+)
 from healthflow_be_egypt.validators import parse_egyptian_national_id, validate_egyptian_phone
 
 
@@ -22,7 +28,7 @@ class EgyptianValidatorTests(unittest.TestCase):
 
     def test_invalid_checksum_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "checksum"):
-            parse_egyptian_national_id("29501023201953")
+            parse_egyptian_national_id("29501023201952")
 
     def test_phone_is_e164(self):
         self.assertTrue(validate_egyptian_phone("+201012345678"))
@@ -41,6 +47,12 @@ class EgyptianValidatorTests(unittest.TestCase):
         config = get_default_config()
         config["currency"]["code"] = "TEST"
         self.assertEqual(DEFAULT_EGYPT_CONFIG["currency"]["code"], "EGP")
+
+    def test_openimis_insuree_number_adapter(self):
+        self.assertEqual(validate_egyptian_insuree_number("29501023201951"), [])
+        errors = validate_egyptian_insuree_number("29501023201954")
+        self.assertEqual(errors[0]["errorCode"], 5)
+        self.assertIn("checksum", errors[0]["message"])
 
 
 if __name__ == "__main__":
