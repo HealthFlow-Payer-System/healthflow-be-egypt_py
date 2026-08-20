@@ -13,7 +13,7 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/HealthFlowEgy/healthflow-be-egypt_py",
-    install_requires=[],
+    install_requires=["django"],
     classifiers=[
         "Framework :: Django",
         "License :: OSI Approved :: GNU Affero General Public License v3",
