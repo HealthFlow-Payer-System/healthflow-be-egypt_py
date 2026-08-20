@@ -1,6 +1,6 @@
 import unittest
 
-from healthflow_be_egypt import egypt_governorates, governorate_by_code
+from healthflow_be_egypt import DEFAULT_EGYPT_CONFIG, egypt_governorates, get_default_config, governorate_by_code
 from healthflow_be_egypt.validators import parse_egyptian_national_id, validate_egyptian_phone
 
 
@@ -33,6 +33,14 @@ class EgyptianValidatorTests(unittest.TestCase):
         self.assertEqual(len(governorates), 27)
         self.assertEqual(governorate_by_code("01").name_ar, "القاهرة")
         self.assertEqual(governorate_by_code("35").name_en, "South Sinai")
+
+    def test_default_configuration_is_egypt_rtl_and_egp(self):
+        self.assertEqual(DEFAULT_EGYPT_CONFIG["defaultLocale"], "ar-EG")
+        self.assertEqual(DEFAULT_EGYPT_CONFIG["direction"], "rtl")
+        self.assertEqual(DEFAULT_EGYPT_CONFIG["currency"]["code"], "EGP")
+        config = get_default_config()
+        config["currency"]["code"] = "TEST"
+        self.assertEqual(DEFAULT_EGYPT_CONFIG["currency"]["code"], "EGP")
 
 
 if __name__ == "__main__":
